@@ -1,27 +1,21 @@
-# Stock Price Prediction Project
+# Stock Price Prediction Expansion
 
-## Overview
-This project explores time-series stock price prediction using machine learning techniques in Python. The objective was to understand how different modeling approaches perform on financial market data and to build a complete, reproducible prediction pipeline.
+This is a rebuild of the previous Stock predictor model, the following optimisations and feature upgrades will include:
 
-## What I Built
-- Collected and preprocessed historical stock price data (e.g. SPY ETF)
-- Engineered features and split data into training, validation, and test sets
-- Implemented:
-  - **LSTM neural network** using PyTorch for sequential time-series modeling
-  - **XGBoost** for gradient-boosted tree regression
-- Evaluated model performance using error metrics and visual comparisons of predicted vs actual prices
+1. Data Infrastructure: Order book data
+2. Enhanced feature engineering and signal research including but not limited to:
 
-## Tools & Technologies
-- Python  
-- PyTorch (LSTM)  
-- XGBoost  
-- Pandas, NumPy, Matplotlib  
+- factor models using the Fama-french three-factor model
+- statistical arbitrage signals,
+- alternative data signal extraction - NLP
 
-## Key Learnings
-- Structuring and cleaning time-series financial data
-- Strengths and limitations of deep learning vs tree-based models
-- Importance of correct data splitting and avoiding data leakage
-- How modeling choices affect predictive performance
+3. Modeling
+4. Backtesting & Evaluation:
 
-## Disclaimer
-This is a project, do not use this as a way to invest your money, you will lose money 😂 
+- Walk-forward analysis
+- Transaction Cost Modelling
+
+5. Risk Management
+
+- Position Sizing
+- Value at Risk (VaR) / Expected Shortfall
