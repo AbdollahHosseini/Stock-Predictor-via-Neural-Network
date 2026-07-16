@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "stocknn"
+version = "0.1.0"
+description = "Stock direction predictor with technical + factor features and honest backtesting."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Abdollah Hosseini" }]
+
+# Direct runtime dependencies (imported by the code). Transitive deps
+# (e.g. pandas via yfinance) are resolved automatically; pandas is listed
+# because the pipeline uses it directly.
+dependencies = [
+    "numpy>=2.0",
+    "pandas>=2.0",
+    "pyyaml>=6.0",
+    "yfinance>=0.2.60",
+]
+
+[project.optional-dependencies]
+# Install with:  pip install -e ".[dev]"
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.5",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]

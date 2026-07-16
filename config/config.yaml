@@ -1,0 +1,7 @@
+# config.yaml used for ticker, start and end ranges, source
+
+yfinance:
+    ticker: AAPL
+    start: "2022-01-01"
+    end: "2026-07-16"
+    interval: "1d"
