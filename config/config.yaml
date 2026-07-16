@@ -2,6 +2,6 @@
 
 yfinance:
     ticker: AAPL
-    start: "2022-01-01"
+    start: "2022-01-03"
     end: "2026-07-16"
     interval: "1d"
