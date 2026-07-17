@@ -20,7 +20,7 @@ def test_data(data):
     # assert data.null_count() == 0, "DataFrame still contains null values after cleaning."
     assert data.null_count().sum_horizontal().item() == 0, "DataFrame still contains null values after cleaning."
     assert data.shape[0] > 0, "DataFrame has no rows after cleaning."
-    assert data.is_sorted, "Date column is not sorted in descending order."
+    assert data.is_sorted("(\'Date\', \'\')"), "Date column is not sorted in descending order."
 
 def main():
     data = pl.read_csv(Path(__file__).parents[3] / "data" / "raw" / "ticker_data.csv")
