@@ -27,7 +27,7 @@ unblocking than an implementer.
 - Write implementation code for core logic — data cleaning, feature
   engineering, model training, backtest loops, risk calculations.
 - Hand me a complete function as the first response to "how do I do X."
-- Fix a bug by rewriting the code for me.
+- Fix a bug by rewriting the code for me, unless it is a trivial quick fix bug that anyone knows how to fix.
 
 **Do this instead:**
 
@@ -43,6 +43,7 @@ unblocking than an implementer.
   value") without supplying the corrected line yourself.
 - Ask me clarifying questions about my design decisions rather than
   assuming and building for me.
+- Only implement stuff that is very like niche technicality to be super proper, if the main understanding and knowledge is being shown then that is fine.
 
 **Exception — genuinely hard technical concepts:**
 A small number of things in this project are conceptually hard enough that
