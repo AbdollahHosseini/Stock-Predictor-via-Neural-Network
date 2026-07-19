@@ -20,8 +20,13 @@ def test_data(data):
     assert not data.is_empty(), "DataFrame is empty after cleaning."
     assert data.null_count().sum_horizontal().item() == 0, "DataFrame still contains null values after cleaning."
     assert data.shape[0] > 0, "DataFrame has no rows after cleaning."
-    assert data.is_sorted("Date"), "Date column is sorted in ascending order."
+    assert data.is_sorted("Date"), "Date column is not sorted in ascending order."
     assert data["Date"].is_unique().all() == True, "Date column contains duplicate values."
+    assert data["Close"].min() >= 0, "Close prices contain negative values."
+    assert data["Open"].min() >= 0, "Open prices contain negative values."
+    assert data["High"].min() >= 0, "High prices contain negative values."
+    assert data["Low"].min() >= 0, "Low prices contain negative values."
+    assert data["Adj Close"].min() >= 0, "Adjusted Close prices contain negative values."
 
 def main():
     data = pl.read_csv(Path(__file__).parents[3] / "data" / "raw" / "{ticker}_data.csv".format(ticker=getConfig()['yfinance']['ticker']))
