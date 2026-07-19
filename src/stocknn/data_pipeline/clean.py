@@ -21,7 +21,7 @@ def test_data(data):
     assert data.null_count().sum_horizontal().item() == 0, "DataFrame still contains null values after cleaning."
     assert data.shape[0] > 0, "DataFrame has no rows after cleaning."
     assert data.is_sorted("Date"), "Date column is sorted in ascending order."
-    assert data.is_unique().all() == True, "Date column contains duplicate values."
+    assert data["Date"].is_unique().all() == True, "Date column contains duplicate values."
 
 def main():
     data = pl.read_csv(Path(__file__).parents[3] / "data" / "raw" / "{ticker}_data.csv".format(ticker=getConfig()['yfinance']['ticker']))

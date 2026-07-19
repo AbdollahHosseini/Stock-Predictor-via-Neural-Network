@@ -11,11 +11,16 @@ def TickerData():
     end_date = config['end']
     interval = config['interval']
 
-    data = yf.download(ticker, start=start_date, end=end_date, interval=interval)
+    try:
+        data = yf.download(ticker, start=start_date, end=end_date, interval=interval, auto_adjust=False)
 
-    data.columns = data.columns.get_level_values(0)
+        data.columns = data.columns.get_level_values(0)
 
-    return pl.DataFrame(data.reset_index())
+        return pl.DataFrame(data.reset_index())
+
+    except Exception as e:
+        print(f"Error fetching data for {ticker}: {e}")
+        return pl.DataFrame()
 
 
 def write_data_to_csv(data, filename):
