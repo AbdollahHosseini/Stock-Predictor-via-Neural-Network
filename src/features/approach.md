@@ -1,0 +1,1 @@
+We will be focusing on the close price of the day, since this gives information about what happened throughout the current day instead of open which would give us information about what happened the previous day and overnight, causing the model to make more inference about what happened throughout the night as well.
