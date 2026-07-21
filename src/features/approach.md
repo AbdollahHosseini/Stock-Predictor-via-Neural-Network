@@ -1,1 +1,3 @@
-We will be focusing on the close price of the day, since this gives information about what happened throughout the current day instead of open which would give us information about what happened the previous day and overnight, causing the model to make more inference about what happened throughout the night as well.
+We will be focusing on the open and close price of the day, since this gives information about what happened throughout the current day and allows us to understand the market during open hours and what causes the market to move.
+
+Target is 1 if tomorrow's close is greater than or equal to tomorrow's open. Otherwise the target is 0.
