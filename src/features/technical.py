@@ -38,6 +38,7 @@ def main():
         data['rsi'] = compute_rsi(data["Close"])
         data['macd_line'], data['signal_line'], data['histogram'] = compute_macd(data["Close"])
         print(data.head(30))
+        
         # data_with_features = data # Change to add_all_features(data)
 
         # output_file = getPath("technical", "{ticker}_data_with_features.csv".format(ticker=getConfig()['yfinance']['ticker']))
@@ -48,4 +49,5 @@ def main():
     except Exception as e:
         print(f"Error in main: {e}")
 
-main()
+if __name__ == "__main__":
+    main()
