@@ -25,31 +25,33 @@ def compute_macd(close: pd.Series, fast: int = 12, slow: int = 26, signal: int =
 
 def compute_lag_features(series: pd.Series, lags: list[int]) -> pd.DataFrame:
     """Returns a DataFrame of lagged columns, one per value in `lags`."""
-    close, open, volume = series['Close'], series['Open'], series['Volume']
     lagged_data = pd.DataFrame(index=series.index)
+
     for lag in lags:
-        lagged_data[f'Close_lag_{lag}'] = close.shift(-lag)
-        lagged_data[f'Open_lag_{lag}'] = open.shift(-lag)
-        lagged_data[f'Volume_lag_{lag}'] = volume.shift(-lag)
+        lagged_data[f'lag_{lag}'] = series.shift(lag)
+        
     return lagged_data
 
 def add_all_features(df: pd.DataFrame) -> pd.DataFrame:
     """Orchestrator: calls each compute_* function, assembles result columns onto df."""
-    ...
+    df['rsi'] = compute_rsi(df["Close"])
+    df['macd_line'], df['signal_line'], df['histogram'] = compute_macd(df["Close"])
+    lagged_features = compute_lag_features(df["Close"], lags=[1, 2, 3, 5, 10])
+
+    df = pd.concat([df, lagged_features], axis=1)
+    
+    return df
 
 def main():
     try:
-        data = pd.read_csv(getPath("target", getConfig()['yfinance']['ticker']))
 
-        data['rsi'] = compute_rsi(data["Close"])
-        data['macd_line'], data['signal_line'], data['histogram'] = compute_macd(data["Close"])
-        print(data.head(20))
-        # data_with_features = data # Change to add_all_features(data)
+        df = pd.read_csv(getPath("target", getConfig()['yfinance']['ticker']))
+        data_with_features = add_all_features(df).dropna(inplace=False) 
+        output_file = getPath("technicals", "{ticker}_data_with_features.csv".format(ticker=getConfig()['yfinance']['ticker']))
+        data_with_features.to_csv(output_file, index=False)
 
-        # output_file = getPath("technical", "{ticker}_data_with_features.csv".format(ticker=getConfig()['yfinance']['ticker']))
-        # data_with_features.to_csv(output_file, index=False)
-        # print(f"Data with features written to {output_file}")
-        # print(getConfig()['yfinance']['ticker'])
+        print(f"Data with features written to {output_file}")
+        print(getConfig()['yfinance']['ticker'])
 
     except Exception as e:
         print(f"Error in main: {e}")
