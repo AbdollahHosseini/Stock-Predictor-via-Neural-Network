@@ -25,7 +25,13 @@ def compute_macd(close: pd.Series, fast: int = 12, slow: int = 26, signal: int =
 
 def compute_lag_features(series: pd.Series, lags: list[int]) -> pd.DataFrame:
     """Returns a DataFrame of lagged columns, one per value in `lags`."""
-    ...
+    close, open, volume = series['Close'], series['Open'], series['Volume']
+    lagged_data = pd.DataFrame(index=series.index)
+    for lag in lags:
+        lagged_data[f'Close_lag_{lag}'] = close.shift(-lag)
+        lagged_data[f'Open_lag_{lag}'] = open.shift(-lag)
+        lagged_data[f'Volume_lag_{lag}'] = volume.shift(-lag)
+    return lagged_data
 
 def add_all_features(df: pd.DataFrame) -> pd.DataFrame:
     """Orchestrator: calls each compute_* function, assembles result columns onto df."""
@@ -37,7 +43,7 @@ def main():
 
         data['rsi'] = compute_rsi(data["Close"])
         data['macd_line'], data['signal_line'], data['histogram'] = compute_macd(data["Close"])
-
+        print(data.head(20))
         # data_with_features = data # Change to add_all_features(data)
 
         # output_file = getPath("technical", "{ticker}_data_with_features.csv".format(ticker=getConfig()['yfinance']['ticker']))
