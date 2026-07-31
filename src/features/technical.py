@@ -46,7 +46,7 @@ def main():
     try:
 
         df = pd.read_csv(getPath("target", getConfig()['yfinance']['ticker']))
-        data_with_features = add_all_features(df).dropna(inplace=False) 
+        data_with_features = add_all_features(df).dropna() 
         output_file = getPath("technicals", "{ticker}_data_with_features.csv".format(ticker=getConfig()['yfinance']['ticker']))
         data_with_features.to_csv(output_file, index=False)
 
