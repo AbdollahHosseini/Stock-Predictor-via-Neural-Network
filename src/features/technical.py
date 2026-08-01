@@ -47,7 +47,7 @@ def main():
 
         df = pd.read_csv(getPath("target", getConfig()['yfinance']['ticker']))
         data_with_features = add_all_features(df).dropna() 
-        output_file = getPath("technicals", "{ticker}_data_with_features.csv".format(ticker=getConfig()['yfinance']['ticker']))
+        output_file = getPath("technicals", "{ticker}".format(ticker=getConfig()['yfinance']['ticker']))
         data_with_features.to_csv(output_file, index=False)
 
         print(f"Data with features written to {output_file}")

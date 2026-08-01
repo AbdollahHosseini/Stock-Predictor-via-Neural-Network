@@ -18,3 +18,5 @@ This is a rebuild of the previous Stock predictor model, the following optimisat
     5. Risk Management
         - Position Sizing
         - Value at Risk (VaR) / Expected Shortfall
+
+Split Decision: - 70% training - 1.25% gap - 28.75% testing
