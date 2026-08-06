@@ -10,6 +10,7 @@ This is a rebuild of the previous Stock predictor model, the following optimisat
         - alternative data signal extraction - NLP
 
     3. Modeling
+        - The baseline model will follow a Naive persistence which will look back at the previous days' target value and predict the same for the current day.
 
     4. Backtesting & Evaluation:
         - Walk-forward analysis

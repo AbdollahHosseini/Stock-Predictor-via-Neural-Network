@@ -32,12 +32,12 @@ def compute_lag_features(series: pd.Series, lags: list[int]) -> pd.DataFrame:
         
     return lagged_data
 
-def relative_volume(df: pd.DataFrame, window: int = 14) -> pd.Series:
+def relative_volume(series: pd.Series, window: int = 14) -> pd.Series:
 
     """Relative volume: current volume / average volume over the past `window` days."""
-    avg_volume = df['Volume'].rolling(window=window).mean()
-    std_volume = df['Volume'].rolling(window=window).std()
-    rel_vol = (df['Volume'] - avg_volume) / (std_volume + 1e-10)  # Avoid division by zero
+    avg_volume = series.rolling(window=window).mean()
+    std_volume = series.rolling(window=window).std()
+    rel_vol = (series - avg_volume) / (std_volume + 1e-10)  # Avoid division by zero
     return rel_vol
 
 
@@ -45,7 +45,7 @@ def add_all_features(df: pd.DataFrame) -> pd.DataFrame:
     """Orchestrator: calls each compute_* function, assembles result columns onto df."""
     df['rsi'] = compute_rsi(df["Close"])
     df['macd_line'], df['signal_line'], df['histogram'] = compute_macd(df["Close"])
-    df['relative_volume'] = relative_volume(df)
+    df['relative_volume'] = relative_volume(df["Volume"])
     lagged_features = compute_lag_features(df["Close"], lags=[1, 2, 3, 5, 10])
 
     df = pd.concat([df, lagged_features], axis=1)
