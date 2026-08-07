@@ -5,7 +5,7 @@ from models.train import get_train_test_data
 from xgboost import plot_importance
 
 
-def xgboost_pred(train_X, test_X, train_Y, params={'objective':'binary:logistic', 'max_depth':4, 'learning_rate':0.05, 'n_estimators':70,'alpha':10}):
+def xgboost_pred(train_X, test_X, train_Y, params={'objective':'binary:logistic', 'max_depth':3, 'learning_rate':0.05, 'n_estimators':100,'alpha':10}):
     """
     Train and evaluate an XGBoost model.
 
