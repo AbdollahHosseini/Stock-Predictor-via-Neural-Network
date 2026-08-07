@@ -1,58 +1,55 @@
 import pandas as pd
 import numpy as np
 from models.train import data_split, get_features_and_target
-from stocknn.config import getConfig
+from stocknn.config import getConfig, getPath
 from models.xgboost_model import xgboost_pred, accuracy
 
-
-def walk_forward_xg(train, test, fold_size):
+    
+def xg_walk_forward(df, fold_size):
     """
-    Perform walk-forward validation on the given training data.
+        perform walk-forward validation on the given training data.
 
     Args:
-        train (pd.DataFrame): The training dataset.
-        test (pd.DataFrame): The testing dataset.
+        df (pd.DataFrame): The training dataset.
         fold_size (int): The size of each fold for walk-forward validation.
     """
 
-    train_chunks = np.array_split(train, len(train) // fold_size)
-    test_chunks = np.array_split(test, len(test) // fold_size)
+    X, y = get_features_and_target(df)
 
-    scores = [0 for _ in range(len(train_chunks) - 1)]
+    X_chunks = np.array_split(X, len(X) // fold_size)
+    y_chunks = np.array_split(y, len(y) // fold_size)
 
-    for i in range(len(train_chunks) - 1):
-        X_train = train_chunks[i]
-        y_train = test_chunks[i]
+    scores = [0 for _ in range(len(X_chunks) - 1)]
+    X = pd.DataFrame()
+    y = pd.DataFrame()
 
-        X_test = train_chunks[i + 1]
-        y_test = test_chunks[i + 1]
+    train_pred = []
 
-        pred, _ = xgboost_pred(X_train, X_test, y_train)
+    for i in range(len(X_chunks) - 1):
 
-        acc = accuracy(pred, y_test)
-        scores[i] = acc
+        X = pd.concat([X, X_chunks[i]])
+        y = pd.concat([y, y_chunks[i]])
 
-    return scores
+        X_test = X_chunks[i + 1][14:]
+        y_test = y_chunks[i + 1][14:]
 
+        pred, _, model = xgboost_pred(X, X_test, y)
 
+        train_pred.append(accuracy(model.predict(X), y))
+        scores[i] = accuracy(pred, y_test)
 
+    return scores, train_pred
+        
 
 def main():
     ticker = getConfig()['yfinance']['ticker']
+    df = pd.read_csv(getPath("technicals", ticker))
 
-    train_df, _, gap_df = data_split("technicals", ticker)
-    X_train, y_train = get_features_and_target(train_df)
-    X_gap, y_gap = get_features_and_target(gap_df)
+    score, train_score = xg_walk_forward(df, int(len(df) * 0.05))
 
-    train = pd.concat([X_train, X_gap])
-    test = pd.concat([y_train, y_gap])
-
-    scores = walk_forward_xg(train, test, fold_size=len(gap_df))
-
-    print(np.mean(scores), np.std(scores))
-
+    print(f"Walk-forward validation scores: {score}, 'mean': {np.mean(score)}, 'std': {np.std(score)}")
+    print(f"Training scores: {train_score}, 'mean': {np.mean(train_score)}, 'std': {np.std(train_score)}")
 
 
 if __name__ == "__main__":
     main()
-    

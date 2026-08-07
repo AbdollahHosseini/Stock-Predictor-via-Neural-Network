@@ -35,7 +35,6 @@ data/
 *.parquet
 *.pkl
 *.h5
-models/
 *.joblib
 
 # Secrets / local env

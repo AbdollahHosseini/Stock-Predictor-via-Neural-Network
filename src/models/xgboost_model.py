@@ -5,7 +5,7 @@ from models.train import get_train_test_data
 from xgboost import plot_importance
 
 
-def xgboost_pred(train_X, test_X, train_Y, params={'objective':'binary:logistic', 'max_depth':4, 'learning_rate':0.05, 'n_estimators':100,'alpha':5}):
+def xgboost_pred(train_X, test_X, train_Y, params={'objective':'binary:logistic', 'max_depth':4, 'learning_rate':0.05, 'n_estimators':70,'alpha':10}):
     """
     Train and evaluate an XGBoost model.
 
@@ -25,7 +25,7 @@ def xgboost_pred(train_X, test_X, train_Y, params={'objective':'binary:logistic'
 
     y_pred = model.predict(test_X)
 
-    return y_pred, model.feature_importances_
+    return y_pred, model.feature_importances_, model
 
 
 def accuracy(prediction, Y_test):
@@ -35,7 +35,7 @@ def accuracy(prediction, Y_test):
 def main():
     X_train, y_train, X_test, y_test = get_train_test_data()
     print(X_train.shape, y_train.shape, X_test.shape, y_test.shape)
-    pred, importances = xgboost_pred(X_train, X_test, y_train)
+    pred, importances, _ = xgboost_pred(X_train, X_test, y_train)
     print("XGBoost Model Accuracy is:", accuracy(pred, y_test))
 
     for i, importance in enumerate(importances):
